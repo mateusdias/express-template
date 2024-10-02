@@ -3,7 +3,7 @@ import {Request, RequestHandler, Response} from "express";
 /*
     Nampespace que contém tudo sobre "contas de usuários"
 */
-export namespace Accounts {
+export namespace AccountsHandler {
     
     /**
      * Tipo UserAccount
@@ -42,13 +42,13 @@ export namespace Accounts {
         
         if(pName && pEmail && pPassword && pBirthdate){
             // prosseguir com o cadastro... 
-            const newAccount: Accounts.UserAccount = {
+            const newAccount: UserAccount = {
                 name: pName,
                 email: pEmail, 
                 password: pPassword,
                 birthdate: pBirthdate
             }
-            const ID = Accounts.saveNewAccount(newAccount);
+            const ID = saveNewAccount(newAccount);
             res.statusCode = 200; 
             res.send(`Nova conta adicionada. Código: ${ID}`);
         }else{

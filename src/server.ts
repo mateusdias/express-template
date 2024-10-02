@@ -1,6 +1,6 @@
 import express from "express";
 import {Request, Response, Router} from "express";
-import { Accounts } from "./accounts/accounts";
+import { AccountsHandler } from "./accounts/accounts";
 
 const port = 3000; 
 const server = express();
@@ -14,7 +14,7 @@ routes.get('/', (req: Request, res: Response)=>{
 });
 
 // vamos organizar as rotas em outro local 
-routes.put('/signUp', Accounts.createAccountRoute);
+routes.put('/signUp', AccountsHandler.createAccountRoute);
 
 server.use(routes);
 
