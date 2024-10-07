@@ -27,6 +27,40 @@ export namespace AccountsHandler {
         accountsDatabase.push(ua);
         return accountsDatabase.length;
     }
+    
+    export function GetAllAcounts() {
+        return accountsDatabase;
+    }
+
+    function VerificarEmail(email:string): boolean{
+        let valid =  false
+        const account =  accountsDatabase.find(a => {
+            if (a.email === email){
+                valid = true;
+                return;
+            }
+        })
+        return valid;
+
+
+
+    }
+
+
+
+
+    export function Authenticate(email:string, password:string): boolean {
+        let valid:boolean = false;
+        const account = accountsDatabase.find(a =>{
+            if(a.email === email && a.password === password){
+                valid = true;
+                return;
+            }
+        })
+        return valid;
+        
+    }
+
 
     /**
      * Função para tratar a rota HTTP /signUp. 
@@ -41,7 +75,13 @@ export namespace AccountsHandler {
         const pBirthdate = req.get('birthdate');
         
         if(pName && pEmail && pPassword && pBirthdate){
+
             // prosseguir com o cadastro... 
+            if(VerificarEmail(pEmail)){ 
+                res.statusCode =400;
+                res.send('Email já cadastrado!');
+            }
+            else { 
             const newAccount: UserAccount = {
                 name: pName,
                 email: pEmail, 
@@ -51,10 +91,34 @@ export namespace AccountsHandler {
             const ID = saveNewAccount(newAccount);
             res.statusCode = 200; 
             res.send(`Nova conta adicionada. Código: ${ID}`);
-        }else{
+        }
+        
+        }
+        else{
             res.statusCode = 400;
             res.send("Parâmetros inválidos ou faltantes.");
         }
+
+}
+
+
+    export const loginHandler: RequestHandler = (req:Request, res: Response) => {
+        const pEmail =  req.get('email');
+        const pPassword = req.get('senha');
+
+        if(pEmail && pPassword){
+            if (Authenticate(pEmail,pPassword)){
+                res.statusCode = 200;
+                res.send('Conta acessada com sucesso!');
+
+            }
+            else {
+                res.statusCode = 400;
+                res.send('Acesso Inválido!');
+            }
+        }
+
+
     }
 
 }

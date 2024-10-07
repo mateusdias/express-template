@@ -13,7 +13,11 @@ routes.get('/', (req: Request, res: Response)=>{
     res.send('Acesso não permitido.');
 });
 
+
+
 // vamos organizar as rotas em outro local 
+routes.put('/login',AccountsHandler.loginHandler)
+
 routes.put('/signUp', AccountsHandler.createAccountRoute);
 
 server.use(routes);
